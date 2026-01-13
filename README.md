@@ -9,7 +9,9 @@ Designed for AI researchers, educators, and technical speakers to visually demon
 
 ## 🚀 Live Visualization
 
-> **[Click here to view the visualization locally](vl_jepa_vis.html)**  
+> **[Click here to view the visualization locally](vl_jepa_vis.html)**
+> ![Uploading image.png…]()
+
 *(If hosted on GitHub Pages, replace this with the live URL)*
 
 ## 🎯 Core Concept
