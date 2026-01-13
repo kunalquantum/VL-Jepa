@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VL-JEPA vs Traditional LLMs: Research-Grade Visualization</title>
+    <title>VL-JEPA vs Traditional LLMs</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
@@ -24,19 +24,6 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Analysis Graph Line Animation */
-        .path-draw {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: draw 3s linear forwards infinite;
-        }
-
-        @keyframes draw {
-            to {
-                stroke-dashoffset: 0;
-            }
-        }
-
         @keyframes flowLine {
             from {
                 stroke-dashoffset: 20;
@@ -50,47 +37,6 @@
         .animate-flow {
             animation: flowLine 1s linear infinite;
         }
-
-        .fade-in-up {
-            animation: fadeInUp 0.5s ease-out forwards;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .pulse-ring::before {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            right: -4px;
-            bottom: -4px;
-            border-radius: inherit;
-            border: 2px solid currentColor;
-            opacity: 0;
-            animation: pulseRing 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-        }
-
-        @keyframes pulseRing {
-            0% {
-                transform: scale(0.9);
-                opacity: 0.7;
-            }
-
-            100% {
-                transform: scale(1.5);
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 
@@ -101,15 +47,7 @@
         <div class="max-w-full mx-auto flex justify-between items-center">
             <div>
                 <h1 class="text-xl font-bold tracking-tight text-slate-900">VL-JEPA vs Traditional LLMs</h1>
-                <p class="text-xs text-slate-500 font-medium">Research-Grade System & Architecture Comparison</p>
-            </div>
-            <div class="flex gap-6 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                <div class="flex items-center gap-1">
-                    <div class="w-2 h-2 rounded-full bg-blue-500"></div> Autoregressive
-                </div>
-                <div class="flex items-center gap-1">
-                    <div class="w-2 h-2 rounded-full bg-orange-500"></div> Joint Embedding Prediction
-                </div>
+                <p class="text-xs text-slate-500 font-medium">Representation Prediction vs Token Generation</p>
             </div>
         </div>
     </header>
@@ -117,133 +55,87 @@
     <!-- Main Content -->
     <main class="flex-1 flex relative overflow-hidden">
 
-        <!-- CENTER DIVIDER LABELS -->
-        <div
-            class="absolute left-1/2 top-10 bottom-10 w-px bg-slate-300 transform -translate-x-1/2 z-10 flex flex-col justify-evenly py-10 pointer-events-none">
-            <!-- Labels positioned to align with diagram sections -->
-        </div>
+        <!-- CENTER DIVIDER -->
+        <div class="absolute left-1/2 top-10 bottom-10 w-px bg-slate-300 transform -translate-x-1/2 z-10"></div>
 
         <!-- LEFT COLUMN: TRADITIONAL LLM -->
         <section id="section-llm"
-            class="flex-1 border-r border-slate-200 flex flex-col items-center relative overflow-y-auto bg-blue-50/10 transition-all duration-500">
-            <div class="w-full max-w-xl p-8 flex flex-col items-center">
+            class="flex-1 border-r border-slate-200 flex flex-col items-center relative overflow-y-auto transition-all duration-500">
+            <div class="w-full max-w-md p-8 flex flex-col items-center">
 
-                <!-- HEADER -->
-                <div class="text-center mb-8">
-                    <h2 class="text-lg font-bold text-slate-800">Traditional LLM</h2>
-                    <div class="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-1 rounded mt-1 inline-block">p(x_t |
-                        x_{&lt;t})</div>
+                <!-- Header -->
+                <div class="w-full bg-blue-100 border-2 border-blue-400 rounded-xl p-4 mb-8">
+                    <h2 class="text-lg font-bold text-slate-800 text-center">Traditional LLM</h2>
                 </div>
 
-                <!-- DIAGRAM -->
-                <div class="relative w-full flex flex-col items-center gap-6">
+                <!-- Input -->
+                <div class="w-64 bg-blue-50 border-2 border-blue-300 rounded-xl p-4 mb-6">
+                    <div class="text-sm font-semibold text-slate-700 text-center">Text/Image</div>
+                </div>
 
-                    <!-- Input Context -->
-                    <div class="w-full group relative">
-                        <div
-                            class="absolute -left-20 top-2 text-[10px] font-bold text-slate-400 uppercase text-right w-16">
-                            Input Sequence</div>
-                        <div id="llm-input-box"
-                            class="w-full p-4 bg-white border border-slate-300 rounded-lg shadow-sm font-mono text-sm text-slate-700 flex gap-2 overflow-x-auto">
-                            <span class="bg-slate-100 px-1 rounded">The</span>
-                            <span class="bg-slate-100 px-1 rounded">cat</span>
-                            <span class="bg-slate-100 px-1 rounded">sat</span>
-                            <span class="bg-slate-100 px-1 rounded">on</span>
-                        </div>
+                <!-- Arrow -->
+                <svg class="w-6 h-12 text-blue-400 mb-6" fill="none" stroke="currentColor" stroke-width="3">
+                    <path d="M12 0v48" marker-end="url(#arrow-blue)"></path>
+                </svg>
+
+                <!-- Token Flow with Loop -->
+                <div class="relative w-full flex flex-col items-center">
+
+                    <!-- Autoregressive Loop Arrow -->
+                    <div class="absolute -left-20 top-0 bottom-0 w-32 h-full">
+                        <svg class="w-full h-full" viewBox="0 0 120 400">
+                            <path d="M 60 50 L 20 50 L 20 350 L 60 350" fill="none" stroke="#60a5fa" stroke-width="4"
+                                stroke-dasharray="8 4" marker-end="url(#arrow-blue)"></path>
+                            <text x="5" y="200" fill="#60a5fa" font-size="14" font-weight="bold"
+                                writing-mode="tb">Autoregressive</text>
+                        </svg>
+                    </div>
+
+                    <!-- Token 1 -->
+                    <div id="token-1" class="w-48 bg-blue-100 border-2 border-blue-400 rounded-xl p-3 mb-4">
+                        <div class="text-sm font-semibold text-slate-700 text-center">Token 1</div>
                     </div>
 
                     <!-- Arrow -->
-                    <svg class="w-6 h-10 text-slate-300" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 0v10l-4 4m4-4l4 4v20"></path>
+                    <svg class="w-6 h-8 text-blue-400" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M12 0v32" marker-end="url(#arrow-blue)"></path>
                     </svg>
 
-                    <!-- Transformer Block -->
-                    <div id="llm-transformer"
-                        class="w-full h-24 bg-blue-50 border-2 border-blue-200 rounded-lg flex flex-col items-center justify-center relative transition-all duration-200">
-                        <span class="text-xs font-bold text-blue-800 uppercase tracking-widest mb-1">Transformer
-                            Decoder</span>
-                        <div class="flex gap-1 opacity-50">
-                            <div class="w-1 h-4 bg-blue-400 rounded-full"></div>
-                            <div class="w-1 h-4 bg-blue-400 rounded-full"></div>
-                            <div class="w-1 h-4 bg-blue-400 rounded-full"></div>
-                        </div>
-
-                        <!-- Compute Label -->
-                        <div class="absolute right-2 top-2 text-[9px] text-blue-400 font-mono">N Layers</div>
+                    <!-- Token 2 -->
+                    <div id="token-2" class="w-48 bg-blue-100 border-2 border-blue-400 rounded-xl p-3 mb-4">
+                        <div class="text-sm font-semibold text-slate-700 text-center">Token 2</div>
                     </div>
 
-                    <!-- Softmax / Token Gen -->
-                    <div class="w-full flex flex-col items-center relative">
-                        <svg class="w-6 h-8 text-slate-300" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 0v12"></path>
-                        </svg>
+                    <!-- Arrow -->
+                    <svg class="w-6 h-8 text-blue-400" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M12 0v32" marker-end="url(#arrow-blue)"></path>
+                    </svg>
 
-                        <div id="llm-softmax"
-                            class="w-3/4 h-12 border border-slate-200 bg-white rounded flex items-center justify-center text-xs text-slate-500 shadow-sm relative overflow-hidden">
-                            <div class="absolute inset-y-0 left-0 bg-blue-100 w-[0%]" id="softmax-bar"></div>
-                            <span class="z-10 relative">Softmax (Vocab Size)</span>
-                        </div>
-
-                        <!-- Loss Visual -->
-                        <div class="absolute -right-24 top-2 flex items-center gap-2">
-                            <div class="text-[10px] text-red-500 font-bold">Cross Entropy Loss</div>
-                            <div
-                                class="w-4 h-4 border border-red-300 rounded-full flex items-center justify-center text-[10px] text-red-500 font-mono">
-                                L</div>
-                        </div>
+                    <!-- Token 3 -->
+                    <div id="token-3" class="w-48 bg-blue-100 border-2 border-blue-400 rounded-xl p-3 mb-4">
+                        <div class="text-sm font-semibold text-slate-700 text-center">Token 3</div>
                     </div>
 
-                    <!-- Output Token -->
-                    <div class="mt-2 text-center relative z-10">
-                        <div id="llm-new-token"
-                            class="inline-block px-4 py-2 bg-blue-600 text-white font-mono font-bold rounded shadow-lg transform scale-0 transition-transform">
-                            ?
-                        </div>
-                        <div class="text-[10px] text-slate-400 mt-1">Next Token</div>
+                    <!-- Arrow -->
+                    <svg class="w-6 h-8 text-blue-400" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M12 0v32" marker-end="url(#arrow-blue)"></path>
+                    </svg>
+
+                    <!-- ... -->
+                    <div class="w-48 bg-blue-50 border-2 border-blue-300 rounded-xl p-3 mb-4">
+                        <div class="text-lg font-bold text-slate-500 text-center">...</div>
                     </div>
 
-                    <!-- Autoregressive Loop Arrow (Big Visual Feature) -->
-                    <div id="llm-loop-arrow"
-                        class="absolute top-[60px] left-[-20px] w-[calc(100%+40px)] h-[calc(100%-40px)] pointer-events-none opacity-0 transition-opacity duration-300">
-                        <svg class="w-full h-full" overflow="visible">
-                            <!-- Path goes from bottom token back up to input -->
-                            <path d="M 120 280 C -40 280 -40 40 40 40" fill="none" stroke="#60a5fa" stroke-width="3"
-                                stroke-dasharray="8 4" class="animate-flow"></path>
-                            <path d="M 40 40 L 30 35 L 30 45 Z" fill="#60a5fa"></path>
-                        </svg>
-                        <div
-                            class="absolute top-1/2 -left-12 bg-white border border-blue-200 px-2 py-1 rounded text-[10px] text-blue-600 font-bold shadow-sm">
-                            Step N+1
-                        </div>
+                    <!-- Arrow -->
+                    <svg class="w-6 h-8 text-blue-400" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M12 0v32" marker-end="url(#arrow-blue)"></path>
+                    </svg>
+
+                    <!-- Token n -->
+                    <div id="token-n" class="w-48 bg-blue-100 border-2 border-blue-400 rounded-xl p-3">
+                        <div class="text-sm font-semibold text-slate-700 text-center">Token n</div>
                     </div>
 
-                </div>
-
-                <!-- NEGATIVE SPACE (What it lacks) -->
-                <div class="mt-12 w-full border-t border-slate-100 pt-6">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3">Architectural Limitations</h3>
-                    <ul class="space-y-2">
-                        <li class="flex items-center gap-2 text-xs text-slate-500 opacity-70">
-                            <span class="text-red-400 font-bold text-lg">×</span> No Explicit World Model
-                        </li>
-                        <li class="flex items-center gap-2 text-xs text-slate-500 opacity-70">
-                            <span class="text-red-400 font-bold text-lg">×</span> No Latent Planning
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- COMPUTE GRAPH -->
-                <div class="mt-8 w-full">
-                    <div class="text-[10px] font-bold text-slate-400 mb-1">Compute Cost vs Time</div>
-                    <div class="h-16 border-l border-b border-slate-300 relative">
-                        <!-- Stair step graph -->
-                        <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-                            <polyline points="0,60 20,60 20,45 40,45 40,30 60,30 60,15 80,15" fill="none"
-                                stroke="#64748b" stroke-width="2"></polyline>
-                        </svg>
-                        <div class="absolute bottom-1 right-1 text-[8px] text-slate-400">Time</div>
-                        <div class="absolute top-1 left-2 text-[8px] text-slate-500 font-bold bg-white px-1">O(n)</div>
-                    </div>
                 </div>
 
             </div>
@@ -251,153 +143,116 @@
 
         <!-- RIGHT COLUMN: VL-JEPA -->
         <section id="section-jepa"
-            class="flex-1 flex flex-col items-center relative overflow-y-auto bg-orange-50/10 transition-all duration-500">
-            <div class="w-full max-w-xl p-8 flex flex-col items-center">
+            class="flex-1 flex flex-col items-center relative overflow-y-auto transition-all duration-500">
+            <div class="w-full max-w-md p-8 flex flex-col items-center">
 
-                <!-- HEADER -->
-                <div class="text-center mb-8">
-                    <h2 class="text-lg font-bold text-slate-800">VL-JEPA</h2>
-                    <div class="text-xs font-mono text-orange-600 bg-orange-50 px-2 py-1 rounded mt-1 inline-block">
-                        sim(pred(x), enc(y))</div>
+                <!-- Header -->
+                <div class="w-full bg-orange-100 border-2 border-orange-400 rounded-xl p-4 mb-8">
+                    <h2 class="text-lg font-bold text-slate-800 text-center">VL-JEPA</h2>
                 </div>
 
-                <!-- DIAGRAM (Dual Encoder Logic) -->
-                <div class="relative w-full grid grid-cols-2 gap-x-4 gap-y-6">
-
-                    <!-- Labels -->
-                    <div class="col-span-1 text-center text-[10px] font-bold text-orange-600 uppercase">Context Path
-                    </div>
-                    <div class="col-span-1 text-center text-[10px] font-bold text-slate-400 uppercase">Target Path
-                        (Masked)</div>
-
-                    <!-- Input 1: Unmasked Context -->
-                    <div class="col-span-1 flex flex-col items-center">
-                        <div class="w-32 h-20 bg-slate-100 border border-slate-300 rounded overflow-hidden relative"
-                            id="jepa-context-img">
-                            <!-- Image with hole -->
-                            <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?q=80&w=200"
-                                class="w-full h-full object-cover opacity-80">
-                            <div class="absolute inset-0 bg-white/30"></div> <!-- Context filter -->
-                        </div>
-                        <div class="text-[9px] mt-1 text-slate-500">x (Unmasked)</div>
-                        <!-- Arrow -->
-                        <svg class="w-4 h-6 text-slate-300 my-1" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M8 0v24"></path>
-                        </svg>
-
-                        <!-- Context Encoder -->
-                        <div id="box-enc-context"
-                            class="w-28 h-12 bg-orange-100 border border-orange-300 rounded flex items-center justify-center text-[10px] font-bold text-orange-800 shadow-sm">
-                            Context Encoder
-                        </div>
-                    </div>
-
-                    <!-- Input 2: Masked Target -->
-                    <div class="col-span-1 flex flex-col items-center opacity-70">
-                        <div class="w-32 h-20 bg-slate-800 border border-slate-600 rounded flex items-center justify-center relative"
-                            id="jepa-target-img">
-                            <span class="text-white/50 text-2xl font-bold">?</span>
-                            <div class="absolute top-1 right-1 text-[8px] text-white/50 bg-black/50 px-1 rounded">Target
+                <!-- Image + Context -->
+                <div id="jepa-input"
+                    class="w-80 bg-orange-50 border-2 border-orange-300 rounded-xl p-4 mb-6 transition-all duration-300">
+                    <div class="text-sm font-semibold text-slate-700 text-center mb-3">Image + Context</div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?q=80&w=200"
+                            class="w-full h-20 object-cover rounded">
+                        <div
+                            class="w-full h-20 bg-slate-300 rounded flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 bg-slate-400"
+                                style="background: repeating-linear-gradient(45deg, #cbd5e1, #cbd5e1 10px, #94a3b8 10px, #94a3b8 20px);">
                             </div>
                         </div>
-                        <div class="text-[9px] mt-1 text-slate-500">y (Masked)</div>
-                        <!-- Arrow -->
-                        <svg class="w-4 h-6 text-slate-300 my-1" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M8 0v24"></path>
-                        </svg>
-
-                        <!-- Target Encoder (EMA) -->
-                        <div id="box-enc-target"
-                            class="w-28 h-12 bg-slate-100 border border-slate-300 rounded flex flex-col items-center justify-center text-[10px] font-bold text-slate-500 relative">
-                            Target Encoder
-                            <div class="text-[8px] font-normal text-slate-400">(EMA / Stop Grad)</div>
-                            <div class="absolute -top-2 -right-2 bg-slate-200 rounded-full p-1"><svg
-                                    class="w-3 h-3 text-slate-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z" />
-                                </svg></div>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?q=80&w=200"
+                            class="w-full h-20 object-cover rounded">
                     </div>
+                    <div class="text-xs text-slate-500 text-center mt-2">Masked Patch</div>
+                </div>
 
-                    <!-- Embeddings Level -->
-                    <div class="col-span-1 flex justify-center">
-                        <div id="emb-context"
-                            class="w-8 h-8 rounded-full bg-orange-400 shadow-lg shadow-orange-400/40 animate-pulse">
-                        </div>
-                    </div>
-                    <div class="col-span-1 flex justify-center">
-                        <div id="emb-target" class="w-8 h-8 rounded-full bg-slate-400 opacity-50"></div>
-                    </div>
+                <!-- Arrow -->
+                <svg class="w-6 h-12 text-orange-400 mb-6" fill="none" stroke="currentColor" stroke-width="3">
+                    <path d="M12 0v48" marker-end="url(#arrow-orange)"></path>
+                </svg>
 
-                    <!-- Predictor Block (Connecting Left to Right logic visually) -->
-                    <div
-                        class="col-span-2 relative h-32 mt-2 bg-orange-50/30 rounded-xl border border-dashed border-orange-200 mx-4">
-                        <div class="absolute top-2 left-2 text-[9px] font-bold text-orange-300 uppercase">Latent
-                            Prediction</div>
+                <!-- Encoder -->
+                <div id="jepa-encoder"
+                    class="w-64 bg-orange-100 border-2 border-orange-400 rounded-xl p-4 mb-6 transition-all duration-300">
+                    <div class="text-sm font-semibold text-slate-700 text-center">Encoder</div>
+                </div>
 
-                        <!-- Diagram Lines -->
+                <!-- Arrow -->
+                <svg class="w-6 h-12 text-orange-400 mb-6" fill="none" stroke="currentColor" stroke-width="3">
+                    <path d="M12 0v48" marker-end="url(#arrow-orange)"></path>
+                </svg>
+
+                <!-- Joint Embedding Space -->
+                <div id="jepa-embedding"
+                    class="relative w-80 bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-400 rounded-xl p-6 mb-6 transition-all duration-300">
+                    <div class="text-sm font-semibold text-slate-700 text-center mb-4">Joint Embedding Space</div>
+
+                    <!-- Embedding visualization -->
+                    <div class="relative h-32 flex items-center justify-center">
+                        <!-- Dots -->
+                        <div class="absolute top-4 left-8 w-3 h-3 bg-orange-400 rounded-full opacity-60"></div>
+                        <div class="absolute top-8 right-12 w-3 h-3 bg-orange-400 rounded-full opacity-60"></div>
+                        <div class="absolute bottom-8 left-16 w-3 h-3 bg-orange-400 rounded-full opacity-60"></div>
+                        <div class="absolute bottom-4 right-8 w-3 h-3 bg-orange-400 rounded-full opacity-60"></div>
+
+                        <!-- Center Z -->
+                        <div class="text-4xl font-bold text-slate-700">Z</div>
+
+                        <!-- Connecting lines -->
                         <svg class="absolute inset-0 w-full h-full pointer-events-none">
-                            <!-- From Context Emb to Predictor -->
-                            <path d="M 75 10 L 140 50" stroke="#fb923c" stroke-width="2" fill="none"
-                                marker-end="url(#arrowhead)"></path>
-                            <!-- Predictor Output -->
-                            <path d="M 230 50 L 300 30" stroke="#fb923c" stroke-width="2" fill="none"
-                                stroke-dasharray="4 2"></path>
+                            <line x1="30" y1="20" x2="160" y2="64" stroke="#fb923c" stroke-width="1" opacity="0.3">
+                            </line>
+                            <line x1="260" y1="40" x2="160" y2="64" stroke="#fb923c" stroke-width="1" opacity="0.3">
+                            </line>
+                            <line x1="70" y1="100" x2="160" y2="64" stroke="#fb923c" stroke-width="1" opacity="0.3">
+                            </line>
+                            <line x1="250" y1="110" x2="160" y2="64" stroke="#fb923c" stroke-width="1" opacity="0.3">
+                            </line>
                         </svg>
-
-                        <!-- The Predictor Unit -->
-                        <div id="box-predictor"
-                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-12 bg-white border-2 border-orange-400 rounded-lg flex items-center justify-center text-xs font-bold text-orange-600 shadow-md">
-                            Predictor
-                        </div>
-
-                        <!-- Prediction MATCH visual -->
-                        <div id="pred-match-visual"
-                            class="absolute right-12 top-6 flex flex-col items-center opacity-0 transition-opacity duration-500">
-                            <div class="text-[10px] font-bold text-orange-600 mb-1">ẑ (Pred)</div>
-                            <div class="w-6 h-6 rounded-full bg-orange-500 shadow-lg"></div>
-
-                            <!-- Loss Connection -->
-                            <div class="h-8 w-px bg-red-400 my-1"></div>
-                            <div class="text-[9px] font-bold text-red-500 bg-red-50 px-1 rounded">L2 Loss</div>
-                            <div class="h-8 w-px bg-red-400 my-1"></div>
-
-                            <div class="w-6 h-6 rounded-full bg-slate-400 mt-1 opacity-50"></div>
-                            <div class="text-[10px] font-bold text-slate-500 mt-1">z (Target)</div>
-                        </div>
-
                     </div>
 
-                </div>
-
-                <!-- NEGATIVE SPACE -->
-                <div class="mt-8 w-full border-t border-slate-100 pt-6">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-3">Eliminated Inefficiencies</h3>
-                    <ul class="space-y-2">
-                        <li class="flex items-center gap-2 text-xs text-slate-500 opacity-70">
-                            <span class="text-red-400 font-bold text-lg">×</span> No Pixel Generation
-                        </li>
-                        <li class="flex items-center gap-2 text-xs text-slate-500 opacity-70">
-                            <span class="text-red-400 font-bold text-lg">×</span> No Token Softmax
-                        </li>
-                        <li class="flex items-center gap-2 text-xs text-slate-500 opacity-70">
-                            <span class="text-red-400 font-bold text-lg">×</span> No Autoregressive Loop
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- COMPUTE GRAPH -->
-                <div class="mt-8 w-full">
-                    <div class="text-[10px] font-bold text-slate-400 mb-1">Compute Cost vs Time</div>
-                    <div class="h-16 border-l border-b border-slate-300 relative">
-                        <!-- Flat line graph -->
-                        <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-                            <line x1="0" y1="45" x2="80" y2="45" stroke="#f97316" stroke-width="2"></line>
-                        </svg>
-                        <div class="absolute bottom-1 right-1 text-[8px] text-slate-400">Time</div>
-                        <div class="absolute top-8 right-2 text-[8px] text-orange-500 font-bold bg-white px-1">O(1)
-                            Parallel</div>
+                    <!-- Loss annotations (dashed) -->
+                    <div class="absolute -left-24 top-1/2 -translate-y-1/2 text-xs text-slate-500 font-semibold">
+                        Loss
                     </div>
+                    <div class="absolute -right-32 top-1/2 -translate-y-1/2 text-xs text-slate-500 font-semibold text-right"
+                        style="width: 120px;">
+                        Contrastive Loss /<br>Prediction Loss
+                    </div>
+
+                    <!-- Dashed arrows -->
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none" overflow="visible">
+                        <path d="M -20 64 L 20 64" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"
+                            marker-end="url(#arrow-gray)"></path>
+                        <path d="M 300 64 L 340 64" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4"
+                            marker-start="url(#arrow-gray-rev)"></path>
+                    </svg>
+                </div>
+
+                <!-- Arrow -->
+                <svg class="w-6 h-12 text-orange-400 mb-6" fill="none" stroke="currentColor" stroke-width="3">
+                    <path d="M12 0v48" marker-end="url(#arrow-orange)"></path>
+                </svg>
+
+                <!-- Predicted Representation -->
+                <div id="jepa-output"
+                    class="w-80 bg-orange-50 border-2 border-orange-300 border-dashed rounded-xl p-6 transition-all duration-300">
+                    <div class="flex items-center justify-center gap-3 mb-2">
+                        <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <circle cx="6" cy="12" r="2"></circle>
+                            <circle cx="12" cy="8" r="2"></circle>
+                            <circle cx="18" cy="12" r="2"></circle>
+                            <circle cx="12" cy="16" r="2"></circle>
+                            <path d="M6 12h6m0-4v8m0-4h6"></path>
+                        </svg>
+                        <div class="text-sm font-semibold text-slate-700">Predicted Vector (Ẑ)</div>
+                    </div>
+                    <div class="text-sm font-bold text-slate-700 text-center">Predicted<br>Representation</div>
                 </div>
 
             </div>
@@ -405,9 +260,28 @@
 
     </main>
 
+    <!-- SVG Markers -->
+    <svg width="0" height="0" class="absolute">
+        <defs>
+            <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                <polygon points="0,0 10,5 0,10" fill="#60a5fa" />
+            </marker>
+            <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                <polygon points="0,0 10,5 0,10" fill="#fb923c" />
+            </marker>
+            <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                <polygon points="0,0 10,5 0,10" fill="#94a3b8" />
+            </marker>
+            <marker id="arrow-gray-rev" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"
+                markerUnits="userSpaceOnUse">
+                <polygon points="10,0 0,5 10,10" fill="#94a3b8" />
+            </marker>
+        </defs>
+    </svg>
+
     <!-- Footer Controls -->
     <div
-        class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur border border-slate-200 p-1.5 rounded-full shadow-2xl z-50 flex gap-2 scale-90">
+        class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur border border-slate-200 p-1.5 rounded-full shadow-2xl z-50 flex gap-2">
         <button onclick="setFocus('left')" id="btn-left"
             class="px-5 py-2 rounded-full text-xs font-bold uppercase transition-all hover:bg-slate-50 text-slate-500 tracking-wide">
             Focus LLM
@@ -422,10 +296,9 @@
         </button>
     </div>
 
-    <!-- SCRIPTS -->
     <script>
-        // --- FOCUS MANAGEMENT ---
         let currentFocus = 'both';
+
         function setFocus(mode) {
             currentFocus = mode;
             const btnLeft = document.getElementById('btn-left');
@@ -454,98 +327,76 @@
             }
         }
 
-        // --- LLM ANIMATION ---
-        const llmTokens = ["The", "cat", "sat", "on", "the", "mat", "."];
-        let llmIdx = 0;
-        const llmInputBox = document.getElementById('llm-input-box');
-        const llmNewToken = document.getElementById('llm-new-token');
-        const llmTransformer = document.getElementById('llm-transformer');
-        const llmLoopArrow = document.getElementById('llm-loop-arrow');
-        const softmaxBar = document.getElementById('softmax-bar');
+        // LLM Animation - Sequential token generation
+        async function animateLLM() {
+            if (currentFocus === 'right') { setTimeout(animateLLM, 100); return; }
 
-        async function stepLLM() {
-            if (currentFocus === 'right') { setTimeout(stepLLM, 100); return; }
+            const tokens = ['token-1', 'token-2', 'token-3', 'token-n'];
 
-            if (llmIdx >= llmTokens.length) {
-                // Reset
-                await new Promise(r => setTimeout(r, 2000));
-                llmInputBox.innerHTML = '<span class="bg-slate-100 px-1 rounded">Start</span>';
-                llmIdx = 0;
+            for (const id of tokens) {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.add('ring-4', 'ring-blue-300', 'scale-105');
+                    await new Promise(r => setTimeout(r, 600));
+                    el.classList.remove('ring-4', 'ring-blue-300', 'scale-105');
+                    await new Promise(r => setTimeout(r, 200));
+                }
             }
 
-            // 1. Transformer Compute
-            llmTransformer.classList.add('bg-blue-100', 'scale-[1.02]', 'shadow-md');
-            await new Promise(r => setTimeout(r, 600));
-            llmTransformer.classList.remove('bg-blue-100', 'scale-[1.02]', 'shadow-md');
-
-            // 2. Softmax Fill
-            softmaxBar.style.width = '100%';
-            softmaxBar.style.transition = 'width 0.3s ease';
-            await new Promise(r => setTimeout(r, 400));
-            softmaxBar.style.width = '0%';
-            softmaxBar.style.transition = 'none';
-
-            // 3. Emit Token
-            const word = llmTokens[llmIdx];
-            llmNewToken.innerText = word;
-            llmNewToken.classList.remove('scale-0');
-            await new Promise(r => setTimeout(r, 500));
-
-            // 4. Loop Back
-            llmLoopArrow.style.opacity = '1';
-            await new Promise(r => setTimeout(r, 800));
-
-            // 5. Append to Context
-            const span = document.createElement('span');
-            span.className = "bg-blue-100/50 px-1 rounded text-blue-700 animate-pulse";
-            span.innerText = word;
-            llmInputBox.appendChild(span);
-
-            llmNewToken.classList.add('scale-0');
-            llmLoopArrow.style.opacity = '0';
-
-            llmIdx++;
-            setTimeout(stepLLM, 500);
+            await new Promise(r => setTimeout(r, 1500));
+            animateLLM();
         }
 
-        // --- JEPA ANIMATION (Dual Encoder) ---
-        const encContext = document.getElementById('box-enc-context');
-        const predictor = document.getElementById('box-predictor');
-        const predVisual = document.getElementById('pred-match-visual');
-        const embTarget = document.getElementById('emb-target');
+        // VL-JEPA Animation - Embedding flow
+        async function animateJEPA() {
+            if (currentFocus === 'left') { setTimeout(animateJEPA, 100); return; }
 
-        async function stepJEPA() {
-            if (currentFocus === 'left') { setTimeout(stepJEPA, 100); return; }
+            const input = document.getElementById('jepa-input');
+            const encoder = document.getElementById('jepa-encoder');
+            const embedding = document.getElementById('jepa-embedding');
+            const output = document.getElementById('jepa-output');
 
-            // Reset
-            predVisual.style.opacity = '0';
-            embTarget.style.opacity = '0.3';
+            // Input highlight
+            if (input) {
+                input.classList.add('ring-4', 'ring-orange-300', 'scale-105');
+                await new Promise(r => setTimeout(r, 700));
+                input.classList.remove('ring-4', 'ring-orange-300', 'scale-105');
+            }
 
-            await new Promise(r => setTimeout(r, 1000));
+            await new Promise(r => setTimeout(r, 200));
 
-            // 1. Context Encode
-            encContext.classList.add('bg-orange-200', 'scale-105');
-            await new Promise(r => setTimeout(r, 600));
-            encContext.classList.remove('bg-orange-200', 'scale-105');
+            // Encoder processing
+            if (encoder) {
+                encoder.classList.add('ring-4', 'ring-orange-400', 'scale-105');
+                await new Promise(r => setTimeout(r, 800));
+                encoder.classList.remove('ring-4', 'ring-orange-400', 'scale-105');
+            }
 
-            // 2. Predictor Process
-            predictor.classList.add('bg-orange-50', 'ring-2', 'ring-orange-300');
-            await new Promise(r => setTimeout(r, 800));
-            predictor.classList.remove('bg-orange-50', 'ring-2', 'ring-orange-300');
+            await new Promise(r => setTimeout(r, 200));
 
-            // 3. Show Prediction & Loss Logic
-            predVisual.style.opacity = '1';
-            embTarget.style.opacity = '1';
+            // Embedding space activation
+            if (embedding) {
+                embedding.classList.add('ring-4', 'ring-amber-300', 'scale-105');
+                await new Promise(r => setTimeout(r, 900));
+                embedding.classList.remove('ring-4', 'ring-amber-300', 'scale-105');
+            }
 
-            await new Promise(r => setTimeout(r, 3000)); // Hold visual
+            await new Promise(r => setTimeout(r, 200));
 
-            stepJEPA();
+            // Output prediction
+            if (output) {
+                output.classList.add('ring-4', 'ring-orange-300', 'scale-105');
+                await new Promise(r => setTimeout(r, 700));
+                output.classList.remove('ring-4', 'ring-orange-300', 'scale-105');
+            }
+
+            await new Promise(r => setTimeout(r, 1500));
+            animateJEPA();
         }
 
-        // Init
-        stepLLM();
-        stepJEPA();
-
+        // Start animations
+        animateLLM();
+        animateJEPA();
     </script>
 </body>
 
